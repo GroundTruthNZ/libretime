@@ -88,13 +88,16 @@ class ShowRecorder(Thread):
 
         #-f:16,2,44100
         #-b:256
-        command = "ecasound -f:%s,%s,%s -i alsa -o %s,%s000 -t:%s" % \
-                                (ss, c, sr, filepath, br, length)
+        #command = "ecasound -f:%s,%s,%s -i alsa -o %s,%s000 -t:%s" % \
+        #                        (ss, c, sr, filepath, br, length)
+        command = "/usr/bin/php /opt/libretime/utils/recorder.php http://libretime-icecast:35112/airtime.ogg %s %s" % \
+                                 (filepath, length)
+
         args = command.split(" ")
 
         self.logger.info("starting record")
         self.logger.info("command " + command)
- 
+
         self.p = Popen(args,stdout=PIPE,stderr=PIPE)
 
         #blocks at the following line until the child process
@@ -245,11 +248,11 @@ class Recorder(Thread):
                 self.logger.debug("Next show %s", next_show)
                 self.logger.debug("Now %s", tnow)
         return out
-    
+
     def cancel_recording(self):
         self.sr.cancel_recording()
         self.sr = None
-    
+
     def currently_recording(self):
         if self.sr is not None and self.sr.is_recording():
             return True
@@ -277,23 +280,23 @@ class Recorder(Thread):
                 start_time_formatted = '%(year)d-%(month)02d-%(day)02d %(hour)02d:%(min)02d:%(sec)02d' % \
                     {'year': start_time_on_server.year, 'month': start_time_on_server.month, 'day': start_time_on_server.day, \
                         'hour': start_time_on_server.hour, 'min': start_time_on_server.minute, 'sec': start_time_on_server.second}
-                    
-                
+
+
                 seconds_waiting = 0
-                
+
                 #avoiding CC-5299
                 while(True):
                     if self.currently_recording():
                         self.logger.info("Previous record not finished, sleeping 100ms")
                         seconds_waiting = seconds_waiting + 0.1
-                        time.sleep(0.1)   
+                        time.sleep(0.1)
                     else:
                         show_length_seconds = show_length.seconds - seconds_waiting
-                        
+
                         self.sr = ShowRecorder(show_instance, show_name, show_length_seconds, start_time_formatted)
                         self.sr.start()
                         break
-                    
+
                 #remove show from shows to record.
                 del self.shows_to_record[start_time]
                 #self.time_till_next_show = self.get_time_till_next_show()
@@ -350,4 +353,3 @@ class Recorder(Thread):
             top = traceback.format_exc()
             self.logger.error('Exception: %s', e)
             self.logger.error("traceback: %s", top)
-
