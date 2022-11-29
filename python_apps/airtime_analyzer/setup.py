@@ -26,7 +26,7 @@ setup(
         "rgain3==1.1.0",
         "PyGObject>=3.34.0",
         # If this version is changed, it needs changing in the install script too
-        "pycairo==1.19.1",
+        "pycairo==1.23.0",
     ],
     zip_safe=False,
 )
