@@ -180,7 +180,7 @@ class Recorder(Thread):
 
     def __init__(
         self,
-        recorder_queue: Queue[Dict[str, Any]],
+        recorder_queue: "Queue[Dict[str, Any]]",
         config: Config,
         legacy_client: LegacyClient,
     ):
@@ -220,6 +220,7 @@ class Recorder(Thread):
 
     def process_recorder_schedule(self, m):
         logger.info("Parsing recording show schedules...")
+        logger.info(print(m))        
         temp_shows_to_record = {}
         shows = m["shows"]
         for show in shows:
