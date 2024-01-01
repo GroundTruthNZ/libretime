@@ -22,6 +22,8 @@ services:
     volumes:
       - ./playout:/src
       - ./dev/playout:/app
+      - ./api-client/libretime_api_client:/usr/local/lib/python3.10/site-packages/libretime_api_client
+      - ./home:/home/libretime      
 
   liquidsoap:
     build:

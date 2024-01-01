@@ -1,6 +1,7 @@
 ## Custom .gitignore
 ################################################################################
 
+/docker/nginx.conf
 .docker/
 .DS_Store
 .idea/
