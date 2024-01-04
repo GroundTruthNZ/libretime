@@ -25,10 +25,10 @@ liquidsoap:
 stream:
   inputs:
     main:
-      public_url: https://localhost:8001/main
+      public_url: http://localhost:8001/main
       mount: main
       port: 8001
-      secure: true
+      secure: false
 
   outputs:
     .default_icecast_output: &default_icecast_output
