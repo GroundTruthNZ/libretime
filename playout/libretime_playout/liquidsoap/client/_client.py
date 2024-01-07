@@ -1,4 +1,5 @@
 import logging
+import json
 from pathlib import Path
 from time import sleep
 from typing import Any, Literal, Optional, Tuple, Union
@@ -143,3 +144,9 @@ class LiquidsoapClient:
                 self._set_var("message_offline", self._quote(message_offline))
             if input_fade_transition is not None:
                 self._set_var("input_fade_transition", input_fade_transition)
+   
+    def start_recording(self, args:dict) -> None:
+        args = json.dumps(args)
+        with self.conn:
+            self.conn.write(f"sources.start_recording {args}")
+            
