@@ -33,7 +33,7 @@ class MessageHandler(ConsumerMixin):
         # A server named queue that expires is used so that if the service
         # gets temporarily disconnected, no events are lost, but the queue is
         # automatically cleaned up on shutdown.
-        queues = [Queue("", exchange=exchange, expires=30.0)]
+        queues = [Queue("", exchange=exchange, durable=True, expires=30.0)]
 
         return [
             Consumer(queues, callbacks=[self.on_message], accept=["text/plain"]),
